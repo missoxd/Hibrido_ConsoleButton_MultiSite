@@ -4,9 +4,7 @@ Módulo criado com o objetivo de alterar as cores dos botões da loja através d
 <h3>Desafio Hibrido - Teste #2 - Meta Tag em Multi-site</h3>
 
 - [Instalação](#instalação)
-- [Limpar o Cache](#limpar-o-cache)
-- [Explicações Gerais](#explicações-gerais)
-- [Considerações](#considerações)
+- [Utilizando](#utilizando)
 
 ## Instalação
 
