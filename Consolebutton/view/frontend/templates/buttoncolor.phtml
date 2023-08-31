@@ -1,0 +1,20 @@
+<?php
+    $currentStoreView = $block->getCurrentStoreId();
+    $storeViewsDB = $block->getStoreViewsDB();
+    $backgroundColor = $block->getButtonColor($currentStoreView);
+    $invertColor = strrev($backgroundColor);
+?>
+
+<?php if(in_array($currentStoreView, $storeViewsDB)): ?>
+    <style>
+        .product-item-actions button.action.tocart.primary, .actions button.action.tocart.primary{
+            background-color: #<?php echo $backgroundColor; ?>;
+            border-color: #<?php echo $backgroundColor; ?>;
+            color: #<?php echo $invertColor; ?>;
+        }.product-item-actions button.action.tocart.primary:hover, .actions button.action.tocart.primary:hover{
+            background-color: #<?php echo $invertColor; ?>;
+            border-color: #<?php echo $invertColor; ?>;
+            color: #<?php echo $backgroundColor; ?>;
+        }
+    </style>
+<?php endif; ?>
