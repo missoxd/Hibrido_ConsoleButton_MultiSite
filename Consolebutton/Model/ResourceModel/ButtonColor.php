@@ -7,6 +7,6 @@ class ButtonColor extends AbstractDb
 {
     protected function _construct()
     {
-        $this->_init('mage_hibrido_button_color', 'id');
+        $this->_init('hibrido_button_color', 'id');
     }
 }

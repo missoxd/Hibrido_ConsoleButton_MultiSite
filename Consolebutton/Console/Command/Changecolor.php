@@ -6,12 +6,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Hibrido\Consolebutton\Model\ButtonColorFactory;
-use Magento\Store\Model\StoreManagerInterface;
 
 class Changecolor extends Command
 {
     protected $buttonColorFactory;
-    protected $storeManager;
 
     public function __construct(ButtonColorFactory $buttonColorFactory, $name = null)
     {
@@ -31,10 +29,6 @@ class Changecolor extends Command
     {
         $newColor = $input->getArgument('color');
         $storeView = $input->getArgument('storeview');
-        $storeManager = $this->storeManager;
-        $storeViewExists = false;
-
-        // Check if storeview value already exists in the table
         $buttonColorModel = $this->buttonColorFactory->create();
         $existingColor = $buttonColorModel->getCollection()->addFieldToFilter('storeview', $storeView)->getFirstItem();
 
@@ -50,5 +44,6 @@ class Changecolor extends Command
         }
         
         $output->writeln('A cor dos botões de visualização da storeview ' . $storeView . ' foram configuradas para ' . $newColor);
+        return 1;
     }
 }

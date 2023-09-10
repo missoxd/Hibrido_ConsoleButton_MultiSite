@@ -8,7 +8,7 @@ use Magento\Framework\App\ResourceConnection;
 
 class Color extends \Magento\Framework\View\Element\Template
 {
-    protected const TABLE_NAME = 'mage_hibrido_button_color';
+    protected const TABLE_NAME = 'hibrido_button_color';
 
     protected $storeManager;
     protected $buttonColorFactory;
