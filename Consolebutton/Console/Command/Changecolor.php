@@ -5,18 +5,34 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Hibrido\Consolebutton\Model\ButtonColorFactory;
+use Hibrido\Consolebutton\Model\ColorRepository;
 
+/**
+ * @package Hibrido\Consolebutton\Console\Command
+ */
 class Changecolor extends Command
 {
-    protected $buttonColorFactory;
+    /**
+     * @var ColorRepository
+     */
+    protected $colorRepository;
 
-    public function __construct(ButtonColorFactory $buttonColorFactory, $name = null)
-    {
-        $this->buttonColorFactory = $buttonColorFactory;
+    /**
+     * @param ColorRepository $colorRepository O repositório de cores personalizado.
+     * @param string|null $name O nome do comando (opcional).
+     */
+    public function __construct(
+        ColorRepository $colorRepository,
+        $name = null
+    ) {
+        $this->colorRepository = $colorRepository;
         parent::__construct($name);
     }
 
+    /**
+     * Configurações do comando.
+     * hibrido:button:change
+     */
     protected function configure()
     {
         $this->setName('hibrido:button:change')
@@ -25,25 +41,24 @@ class Changecolor extends Command
             ->addArgument('storeview', InputArgument::REQUIRED, 'Change the color of which storeview?');
     }
 
+    /**
+     * @param InputInterface $input A entrada do console.
+     * @param OutputInterface $output A saída do console.
+     * @return int O código de retorno (1 para sucesso, 0 para falha).
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $newColor = $input->getArgument('color');
         $storeView = $input->getArgument('storeview');
-        $buttonColorModel = $this->buttonColorFactory->create();
-        $existingColor = $buttonColorModel->getCollection()->addFieldToFilter('storeview', $storeView)->getFirstItem();
 
-        if (!$existingColor->getId()) {
-            $buttonColorModel->setData([
-                'color' => $newColor,
-                'storeview' => $storeView
-            ]);
-            $buttonColorModel->save();
-        } else {
-            $existingColor->setData('color', $newColor);
-            $existingColor->save();
+        try {
+            $this->colorRepository->saveColor($storeView, $newColor);
+
+            $output->writeln('A cor dos botões de visualização da storeview ' . $storeView . ' foram configuradas para ' . $newColor);
+            return 1;
+        } catch (\Throwable $e) {
+            $output->writeln('Error: ' . $e->getMessage());
+            return 0;
         }
-        
-        $output->writeln('A cor dos botões de visualização da storeview ' . $storeView . ' foram configuradas para ' . $newColor);
-        return 1;
     }
 }
