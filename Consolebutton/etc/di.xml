@@ -6,4 +6,6 @@
             </argument>
         </arguments>
     </type>
+    <!-- Referência para a interface ColorRepositoryInterface -->
+    <preference for="Hibrido\RepositoryPa\Api\ColorRepositoryInterface" type="Hibrido\RepositoryPa\Model\ColorRepository" />
 </config>

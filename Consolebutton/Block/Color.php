@@ -1,55 +1,73 @@
 <?php
 namespace Hibrido\Consolebutton\Block;
 
-use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\StoreManagerInterface;
-use Hibrido\Consolebutton\Model\ButtonColorFactory;
-use Magento\Framework\App\ResourceConnection;
+use Hibrido\Consolebutton\Model\ColorRepository;
+use Magento\Framework\View\Element\Template;
 
-class Color extends \Magento\Framework\View\Element\Template
+/**
+ * @package Hibrido\Consolebutton\Block
+ */
+class Color extends Template
 {
     protected const TABLE_NAME = 'hibrido_button_color';
 
+    /**
+     * @var StoreManagerInterface
+     */
     protected $storeManager;
-    protected $buttonColorFactory;
-    protected $resourceConnection;
-    protected $connection;
 
+    /**
+     * @var ColorRepository
+     */
+    protected $colorRepository;
+
+    /**
+     * @param StoreManagerInterface $storeManager O gerenciador de store do Magento.
+     * @param ColorRepository $colorRepository O repositório de cores personalizado.
+     */
     public function __construct(
-        ButtonColorFactory $buttonColorFactory,
-        Context $context,
         StoreManagerInterface $storeManager,
-        ResourceConnection $resourceConnection,
-        array $data = []
+        ColorRepository $colorRepository
     ) {
         $this->storeManager = $storeManager;
-        $this->buttonColorFactory = $buttonColorFactory;
-        $this->resourceConnection = $resourceConnection;
-        parent::__construct($context, $data);
-        $this->connection = $this->resourceConnection->getConnection();
+        $this->colorRepository = $colorRepository;
     }
 
+    /**
+     * @return array Lista de store views.
+     */
+    public function getStoreViewsDB()
+    {
+        $result = $this->colorRepository->getAllStoreviews();
+        $storeViews = [];
+
+        foreach ($result as $row) {
+            $storeViews[] = $row['storeview'];
+        }
+
+        return $storeViews;
+    }
+
+    /**
+     * @param string $storeView A store view para a qual a cor do botão é desejada.
+     * @return string A cor do botão em formato hexadecimal.
+     */
+    public function getButtonColor($storeView)
+    {
+        $result = $this->colorRepository->getAllColor();
+        
+        if (isset($result[$storeView]['color'])) {
+            return $result[$storeView]['color'];
+        }
+    }
+
+    /**
+     * @return int O ID da store view atual.
+     */
     public function getCurrentStoreId()
     {
         $currentStoreView = $this->storeManager->getStore()->getStoreId();
         return $currentStoreView;
-    }
-
-    public function getStoreViewsDB()
-    {
-        $select = $this->connection->select()->from($this::TABLE_NAME, 'storeview');
-        $result = $this->connection->fetchAll($select);
-
-        $storeViews = [];
-        foreach ($result as $row) {
-            $storeViews[] = $row['storeview'];
-        }
-        return $storeViews;
-    }
-
-    public function getButtonColor($storeView){
-        $select = $this->connection->select()->from($this::TABLE_NAME, 'color')->where('storeview = ?', $storeView);
-        $result = $this->connection->fetchRow($select);
-        return $result['color'];
     }
 }
