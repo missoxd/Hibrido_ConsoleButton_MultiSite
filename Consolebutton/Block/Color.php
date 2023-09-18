@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace Hibrido\Consolebutton\Block;
 
 use Magento\Store\Model\StoreManagerInterface;
