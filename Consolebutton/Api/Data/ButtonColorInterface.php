@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hibrido\Consolebutton\Api\Data;
 
 interface ButtonColorInterface
@@ -9,15 +11,17 @@ interface ButtonColorInterface
     const STOREVIEW = 'storeview';
 
     /**
-     * @return int
+     * @return mixed
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    public function getId(): int;
+    public function getId();
 
     /**
-     * @param int $id
-     * @return void
+     * @param mixed $value
+     * @return $this
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    public function setId(int $id): void;
+    public function setId(mixed $value);
 
     /**
      * @return string
@@ -26,9 +30,9 @@ interface ButtonColorInterface
 
     /**
      * @param string $color
-     * @return void
+     * @return static
      */
-    public function setColor(string $color): void;
+    public function setColor(string $color): static;
 
     /**
      * @return int
@@ -37,7 +41,7 @@ interface ButtonColorInterface
 
     /**
      * @param int $storeview
-     * @return void
+     * @return static
      */
-    public function setStoreview(int $storeview): void;
+    public function setStoreview(int $storeview): static;
 }

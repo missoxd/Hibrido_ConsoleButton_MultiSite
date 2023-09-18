@@ -1,4 +1,6 @@
 <?php
+/** @var \Hibrido\Consolebutton\Block\Color $block */
+
 // Obtém o ID da store view atual.
 $currentStoreView = $block->getCurrentStoreId();
 
@@ -12,33 +14,33 @@ $backgroundColor = $block->getButtonColor($currentStoreView);
 $invertColor = strrev($backgroundColor);
 ?>
 
-<?php if(in_array($currentStoreView, $storeViewsDB)): ?>
+<?php if (in_array($currentStoreView, $storeViewsDB)): ?>
     <style>
         /* Estilos CSS para botões com base na cor de fundo */
         .product-item-actions button.action.tocart.primary,
         .actions button.action.tocart.primary {
-            background-color: #<?php echo $backgroundColor; ?> !important;
-            border-color: #<?php echo $backgroundColor; ?> !important;
-            color: #<?php echo $invertColor; ?> !important;
+            background-color: #<?= $backgroundColor; ?> !important;
+            border-color: #<?= $backgroundColor; ?> !important;
+            color: #<?= $invertColor; ?> !important;
         }
 
         .product-item-actions button.action.tocart.primary:hover,
         .actions button.action.tocart.primary:hover {
-            background-color: #<?php echo $invertColor; ?> !important;
-            border-color: #<?php echo $invertColor; ?> !important;
-            color: #<?php echo $backgroundColor; ?> !important;
+            background-color: #<?= $invertColor; ?> !important;
+            border-color: #<?= $invertColor; ?> !important;
+            color: #<?= $backgroundColor; ?> !important;
         }
 
         button.primary {
-            background-color: #<?php echo $backgroundColor; ?> !important;
-            border-color: #<?php echo $backgroundColor; ?> !important;
-            color: #<?php echo $invertColor; ?> !important;
+            background-color: #<?= $backgroundColor; ?> !important;
+            border-color: #<?= $backgroundColor; ?> !important;
+            color: #<?= $invertColor; ?> !important;
         }
 
         button.primary:hover {
-            background-color: #<?php echo $backgroundColor; ?> !important;
-            border-color: #<?php echo $backgroundColor; ?> !important;
-            color: #<?php echo $invertColor; ?> !important;
+            background-color: #<?= $backgroundColor; ?> !important;
+            border-color: #<?= $backgroundColor; ?> !important;
+            color: #<?= $invertColor; ?> !important;
         }
     </style>
 <?php endif; ?>

@@ -1,102 +1,84 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hibrido\Consolebutton\Model;
 
+use Exception;
 use Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface;
-use Magento\Framework\Model\ResourceModel\Db\Context;
+use Hibrido\Consolebutton\Api\Data\ButtonColorInterface;
+use Hibrido\Consolebutton\Model\ResourceModel\ButtonColor as ButtonColorResourceModel;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 class ButtonColorRepository implements ButtonColorRepositoryInterface
 {
-    const TABLE_NAME = 'hibrido_button_color';
-
     /**
-     * @var Context
+     * @var ButtonColorFactory
      */
-    protected $context;
+    private ButtonColorFactory $buttonColorFactory;
 
     /**
-     * @param Context $context O contexto do recurso do banco de dados.
+     * @var ButtonColorResourceModel
+     */
+    private ButtonColorResourceModel $buttonColorResourceModel;
+
+    /**
+     * @param ButtonColorFactory $buttonColorFactory
+     * @param ButtonColorResourceModel $buttonColorResourceModel
      */
     public function __construct(
-        Context $context
+        ButtonColorFactory $buttonColorFactory,
+        ButtonColorResourceModel $buttonColorResourceModel
     ) {
-        $this->context = $context;
+        $this->buttonColorFactory = $buttonColorFactory;
+        $this->buttonColorResourceModel = $buttonColorResourceModel;
     }
 
     /**
-     * @return array Uma lista de store views.
+     * @param ButtonColorInterface $buttonColor
+     * @return ButtonColorInterface
+     * @throws CouldNotSaveException
      */
-    public function getAllStoreviews(){
-        return $this->getColumns('storeview', $this->getConnection());
-    }
-
-    /**
-     * @return array Uma lista de cores.
-     */
-    public function getAllColor(){
-        return $this->getColumns('color', $this->getConnection());
-    }
-
-    /**
-     * @param string $storeView A store view a ser associada à cor.
-     * @param string $newColor A nova cor a ser salva.
-     */
-    public function saveColor($storeView, $newColor)
+    public function save(ButtonColorInterface $buttonColor): ButtonColorInterface
     {
-        $connection = $this->getConnection();
+        // Hydrator não utilizado para manter a simplicidade
 
-        $data = [
-            'color' => $newColor,
-            'storeview' => $storeView
-        ];
+        $buttonColorModel = $this->buttonColorFactory->create();
 
-        if ($this->storeviewExists($storeView)) {
-            $where = ['storeview = ?' => $storeView];
-            $connection[0]->update($connection[1], $data, $where);
-        } else {
-            $connection[0]->insert($connection[1], $data);
+        if ($buttonColor->getId()) {
+            $buttonColorModel->setId($buttonColor->getId());
         }
+
+        $buttonColorModel->setColor($buttonColor->getColor());
+        $buttonColorModel->setStoreview($buttonColor->getStoreview());
+
+        try {
+            $this->buttonColorResourceModel->save($buttonColorModel);
+        } catch (Exception $e) {
+            throw new CouldNotSaveException(__($e->getMessage()));
+        }
+
+        $buttonColor->setId($buttonColorModel->getId());
+
+        return $buttonColor;
     }
 
     /**
-     * @param string $storeView A store view a ser verificada.
-     * @return bool True se a store view existe, false caso contrário.
+     * @param int $storeview
+     * @return ButtonColorInterface
+     * @throws NoSuchEntityException
      */
-    public function storeviewExists($storeView)
+    public function loadByStoreview(int $storeview): ButtonColorInterface
     {
-        $connection = $this->getConnection();
+        $buttonColorModel = $this->buttonColorFactory->create();
 
-        $select = $connection[0]->select()
-            ->from($connection[1])
-            ->where('storeview = ?', $storeView);
+        $this->buttonColorResourceModel->load($buttonColorModel, $storeview, 'storeview');
 
-        $query = $connection[0]->query($select);
-        $result = $query->fetchAll();
+        if (!$buttonColorModel->getId()) {
+            throw new NoSuchEntityException;
+        }
 
-        return count($result) > 0;
-    }
-
-    /**
-     * @return array Um array contendo a conexão e o nome da tabela.
-     */
-    protected function getConnection(){
-        $connection = $this->context->getResources()->getConnection();
-        $tableName = $this->context->getResources()->getTableName(SELF::TABLE_NAME);
-
-        return[$connection, $tableName];
-    }
-
-    /**
-     * @param string $ColumnName Coluna a ser recuperada.
-     * @param array $connection A conexão com o banco de dados e o nome da tabela.
-     * @return array
-     */
-    protected function getColumns($ColumnName, $connection){
-        $select = $connection[0]->select()
-            ->from($connection[1], [$ColumnName]);
-        $query = $connection[0]->query($select);
-        $result = $query->fetchAll();
-
-        return $result;
+        return $buttonColorModel;
     }
 }

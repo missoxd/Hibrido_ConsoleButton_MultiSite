@@ -1,28 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hibrido\Consolebutton\Api;
+
+use Hibrido\Consolebutton\Api\Data\ButtonColorInterface;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
 
 interface ButtonColorRepositoryInterface
 {
     /**
-     * @return array Lista de store views.
+     * @param Data\ButtonColorInterface $buttonColor
+     * @return Data\ButtonColorInterface
+     * @throws CouldNotSaveException
      */
-    public function getAllStoreviews();
+    public function save(Data\ButtonColorInterface $buttonColor): Data\ButtonColorInterface;
 
     /**
-     * @return array Lista de cores.
+     * @param int $storeview
+     * @return ButtonColorInterface
+     * @throws NoSuchEntityException
      */
-    public function getAllColor();
-
-    /**
-     * @param string $storeView A store view para a qual a cor será atribuída.
-     * @param string $newColor A nova cor em formato hexadecimal.
-     */
-    public function saveColor($storeView, $newColor);
-
-    /**
-     * @param string $storeView A store view a ser verificada.
-     * @return bool Retorna verdadeiro se a store view existir, falso caso contrário.
-     */
-    public function storeviewExists($storeView);
+    public function loadByStoreview(int $storeview): ButtonColorInterface;
 }

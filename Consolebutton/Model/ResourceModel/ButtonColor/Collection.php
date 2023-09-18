@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Hibrido\Consolebutton\Model\ResourceModel\ButtonColor;
 
 use Hibrido\Consolebutton\Model\ButtonColor;
