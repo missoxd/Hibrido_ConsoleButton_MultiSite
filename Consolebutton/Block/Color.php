@@ -2,7 +2,7 @@
 namespace Hibrido\Consolebutton\Block;
 
 use Magento\Store\Model\StoreManagerInterface;
-use Hibrido\Consolebutton\Model\ColorRepository;
+use Hibrido\Consolebutton\Model\ButtonColorRepository;
 use Magento\Framework\View\Element\Template;
 
 /**
@@ -18,17 +18,17 @@ class Color extends Template
     protected $storeManager;
 
     /**
-     * @var ColorRepository
+     * @var ButtonColorRepository
      */
     protected $colorRepository;
 
     /**
      * @param StoreManagerInterface $storeManager O gerenciador de store do Magento.
-     * @param ColorRepository $colorRepository O repositório de cores personalizado.
+     * @param ButtonColorRepository $colorRepository O repositório de cores personalizado.
      */
     public function __construct(
         StoreManagerInterface $storeManager,
-        ColorRepository $colorRepository
+        ButtonColorRepository $colorRepository
     ) {
         $this->storeManager = $storeManager;
         $this->colorRepository = $colorRepository;
@@ -56,7 +56,7 @@ class Color extends Template
     public function getButtonColor($storeView)
     {
         $result = $this->colorRepository->getAllColor();
-        
+
         if (isset($result[$storeView]['color'])) {
             return $result[$storeView]['color'];
         }

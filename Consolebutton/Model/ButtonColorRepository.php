@@ -2,13 +2,10 @@
 
 namespace Hibrido\Consolebutton\Model;
 
-use Hibrido\Consolebutton\Api\ColorRepositoryInterface;
+use Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 
-/**
- * Implementação da interface ColorRepositoryInterface.
- */
-class ColorRepository implements ColorRepositoryInterface
+class ButtonColorRepository implements ButtonColorRepositoryInterface
 {
     const TABLE_NAME = 'hibrido_button_color';
 
@@ -85,7 +82,7 @@ class ColorRepository implements ColorRepositoryInterface
     protected function getConnection(){
         $connection = $this->context->getResources()->getConnection();
         $tableName = $this->context->getResources()->getTableName(SELF::TABLE_NAME);
-        
+
         return[$connection, $tableName];
     }
 

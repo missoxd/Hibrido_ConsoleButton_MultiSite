@@ -5,7 +5,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
-use Hibrido\Consolebutton\Model\ColorRepository;
+use Hibrido\Consolebutton\Model\ButtonColorRepository;
 
 /**
  * @package Hibrido\Consolebutton\Console\Command
@@ -13,19 +13,19 @@ use Hibrido\Consolebutton\Model\ColorRepository;
 class Changecolor extends Command
 {
     /**
-     * @var ColorRepository
+     * @var ButtonColorRepository
      */
-    protected $colorRepository;
+    protected $buttonColorRepository;
 
     /**
-     * @param ColorRepository $colorRepository O repositório de cores personalizado.
+     * @param ButtonColorRepository $colorRepository O repositório de cores personalizado.
      * @param string|null $name O nome do comando (opcional).
      */
     public function __construct(
-        ColorRepository $colorRepository,
+        ButtonColorRepository $colorRepository,
         $name = null
     ) {
-        $this->colorRepository = $colorRepository;
+        $this->buttonColorRepository = $colorRepository;
         parent::__construct($name);
     }
 
@@ -52,7 +52,7 @@ class Changecolor extends Command
         $storeView = $input->getArgument('storeview');
 
         try {
-            $this->colorRepository->saveColor($storeView, $newColor);
+            $this->buttonColorRepository->saveColor($storeView, $newColor);
 
             $output->writeln('A cor dos botões de visualização da storeview ' . $storeView . ' foram configuradas para ' . $newColor);
             return 1;

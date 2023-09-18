@@ -2,11 +2,7 @@
 
 namespace Hibrido\Consolebutton\Api;
 
-/**
- * Interface ColorRepositoryInterface
- * @package Hibrido\Consolebutton\Api
- */
-interface ColorRepositoryInterface
+interface ButtonColorRepositoryInterface
 {
     /**
      * @return array Lista de store views.
