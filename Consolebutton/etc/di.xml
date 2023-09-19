@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Hibrido\Consolebutton\Api\Data\ButtonColorInterface" type="Hibrido\Consolebutton\Model\ButtonColor"/>
     <preference for="Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface" type="Hibrido\Consolebutton\Model\ButtonColorRepository"/>
     <preference for="Hibrido\Consolebutton\Api\ButtonColorChangeServiceInterface" type="Hibrido\Consolebutton\Model\ButtonColorChangeService"/>
     <type name="Magento\Framework\Console\CommandList">
