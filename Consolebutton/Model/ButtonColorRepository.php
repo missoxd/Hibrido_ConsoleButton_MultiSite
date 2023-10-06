@@ -7,51 +7,43 @@ namespace Hibrido\Consolebutton\Model;
 use Exception;
 use Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface;
 use Hibrido\Consolebutton\Api\Data\ButtonColorInterface;
+use Hibrido\Consolebutton\Api\Data\ButtonColorSearchResultsInterface;
+use Hibrido\Consolebutton\Api\Data\ButtonColorSearchResultsInterfaceFactory;
 use Hibrido\Consolebutton\Model\ResourceModel\ButtonColor as ButtonColorResourceModel;
+use Hibrido\Consolebutton\Model\ResourceModel\ButtonColor\CollectionFactory as ButtonColorCollectionFactory;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\EntityManager\HydratorInterface;
 use Magento\Framework\Exception\CouldNotSaveException;
-use Magento\Framework\Exception\NoSuchEntityException;
 
 class ButtonColorRepository implements ButtonColorRepositoryInterface
 {
     /**
-     * @var ButtonColorFactory
-     */
-    private ButtonColorFactory $buttonColorFactory;
-
-    /**
-     * @var ButtonColorResourceModel
-     */
-    private ButtonColorResourceModel $buttonColorResourceModel;
-
-    /**
      * @param ButtonColorFactory $buttonColorFactory
      * @param ButtonColorResourceModel $buttonColorResourceModel
+     * @param ButtonColorCollectionFactory $buttonColorCollectionFactory
+     * @param ButtonColorSearchResultsInterfaceFactory $buttonColorSearchResultsFactory
+     * @param CollectionProcessorInterface $collectionProcessor
+     * @param HydratorInterface $hydrator
      */
     public function __construct(
-        ButtonColorFactory $buttonColorFactory,
-        ButtonColorResourceModel $buttonColorResourceModel
-    ) {
-        $this->buttonColorFactory = $buttonColorFactory;
-        $this->buttonColorResourceModel = $buttonColorResourceModel;
-    }
+        private readonly ButtonColorFactory $buttonColorFactory,
+        private readonly ButtonColorResourceModel $buttonColorResourceModel,
+        private readonly ButtonColorCollectionFactory $buttonColorCollectionFactory,
+        private readonly ButtonColorSearchResultsInterfaceFactory $buttonColorSearchResultsFactory,
+        private readonly CollectionProcessorInterface $collectionProcessor,
+        private readonly HydratorInterface $hydrator
+    ) {}
 
     /**
-     * @param ButtonColorInterface $buttonColor
-     * @return ButtonColorInterface
-     * @throws CouldNotSaveException
+     * {@inheritdoc}
      */
     public function save(ButtonColorInterface $buttonColor): ButtonColorInterface
     {
-        // Hydrator não utilizado para manter a simplicidade
-
-        $buttonColorModel = $this->buttonColorFactory->create();
-
-        if ($buttonColor->getId()) {
-            $buttonColorModel->setId($buttonColor->getId());
-        }
-
-        $buttonColorModel->setColor($buttonColor->getColor());
-        $buttonColorModel->setStoreview($buttonColor->getStoreview());
+        $this->hydrator->hydrate(
+            $buttonColorModel = $this->buttonColorFactory->create(),
+            $this->hydrator->extract($buttonColor)
+        );
 
         try {
             $this->buttonColorResourceModel->save($buttonColorModel);
@@ -59,26 +51,39 @@ class ButtonColorRepository implements ButtonColorRepositoryInterface
             throw new CouldNotSaveException(__($e->getMessage()));
         }
 
-        $buttonColor->setId($buttonColorModel->getId());
-
-        return $buttonColor;
+        return $buttonColorModel;
     }
 
     /**
-     * @param int $storeview
-     * @return ButtonColorInterface
-     * @throws NoSuchEntityException
+     * {@inheritdoc}
      */
-    public function loadByStoreview(int $storeview): ButtonColorInterface
+    public function getList(SearchCriteriaInterface $searchCriteria): ButtonColorSearchResultsInterface
     {
-        $buttonColorModel = $this->buttonColorFactory->create();
+        $this->collectionProcessor->process(
+            $searchCriteria,
+            $collection = $this->buttonColorCollectionFactory->create()
+        );
 
-        $this->buttonColorResourceModel->load($buttonColorModel, $storeview, 'storeview');
-
-        if (!$buttonColorModel->getId()) {
-            throw new NoSuchEntityException;
-        }
-
-        return $buttonColorModel;
+        return $this->buttonColorSearchResultsFactory
+            ->create()
+            ->setSearchCriteria($searchCriteria)
+            ->setItems($collection->getItems())
+            ->setTotalCount($collection->getSize());
     }
+
+//    /**
+//     * {@inheritdoc}
+//     */
+//    public function loadByStoreview(int $storeview): ButtonColorInterface
+//    {
+//        $buttonColorModel = $this->buttonColorFactory->create();
+//
+//        $this->buttonColorResourceModel->load($buttonColorModel, $storeview, 'storeview');
+//
+//        if (!$buttonColorModel->getId()) {
+//            throw new NoSuchEntityException;
+//        }
+//
+//        return $buttonColorModel;
+//    }
 }

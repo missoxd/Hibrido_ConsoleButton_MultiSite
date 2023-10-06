@@ -8,13 +8,8 @@ use Magento\Store\Model\StoreManagerInterface;
 use Hibrido\Consolebutton\Model\ButtonColorRepository;
 use Magento\Framework\View\Element\Template;
 
-/**
- * @package Hibrido\Consolebutton\Block
- */
-class Color extends Template
+class ButtonColor extends Template
 {
-    protected const TABLE_NAME = 'hibrido_button_color';
-
     /**
      * @var StoreManagerInterface
      */

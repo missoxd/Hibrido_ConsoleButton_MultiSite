@@ -1,5 +1,4 @@
 <?php
-
 declare(strict_types=1);
 
 namespace Hibrido\Consolebutton\Model;
@@ -19,9 +18,9 @@ class ButtonColor extends AbstractModel implements ButtonColorInterface
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getColor(): string
+    public function getColor(): ?string
     {
         return $this->getData(static::COLOR);
     }
@@ -36,9 +35,9 @@ class ButtonColor extends AbstractModel implements ButtonColorInterface
     }
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getStoreview(): int
+    public function getStoreview(): ?int
     {
         return $this->getData(static::STOREVIEW);
     }

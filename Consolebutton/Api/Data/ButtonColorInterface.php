@@ -24,9 +24,9 @@ interface ButtonColorInterface
     public function setId(mixed $value);
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getColor(): string;
+    public function getColor(): ?string;
 
     /**
      * @param string $color
@@ -35,9 +35,9 @@ interface ButtonColorInterface
     public function setColor(string $color): static;
 
     /**
-     * @return int
+     * @return ?int
      */
-    public function getStoreview(): int;
+    public function getStoreview(): ?int;
 
     /**
      * @param int $storeview
