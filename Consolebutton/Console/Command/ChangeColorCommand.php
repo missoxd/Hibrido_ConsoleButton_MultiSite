@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hibrido\Consolebutton\Console\Command;
 
-use Hibrido\Consolebutton\Api\ButtonColorChangeServiceInterface;
+use Hibrido\Consolebutton\Api\ButtonColorManagementInterface;
 use Magento\Framework\Console\Cli;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,16 +14,16 @@ use Symfony\Component\Console\Input\InputArgument;
 class ChangeColorCommand extends Command
 {
     /**
-     * @var ButtonColorChangeServiceInterface
+     * @var ButtonColorManagementInterface
      */
-    private ButtonColorChangeServiceInterface $buttonColorChangeService;
+    private ButtonColorManagementInterface $buttonColorChangeService;
 
     /**
-     * @param ButtonColorChangeServiceInterface $buttonColorChangeService
+     * @param ButtonColorManagementInterface $buttonColorChangeService
      * @param ?string $name
      */
     public function __construct(
-        ButtonColorChangeServiceInterface $buttonColorChangeService,
+        ButtonColorManagementInterface $buttonColorChangeService,
         ?string $name = null
     ) {
         $this->buttonColorChangeService = $buttonColorChangeService;

@@ -8,8 +8,8 @@
         type="Hibrido\Consolebutton\Model\ButtonColor"
     />
     <preference
-        for="Hibrido\Consolebutton\Api\ButtonColorChangeServiceInterface"
-        type="Hibrido\Consolebutton\Model\ButtonColorChangeService"
+        for="Hibrido\Consolebutton\Api\ButtonColorManagementInterface"
+        type="Hibrido\Consolebutton\Model\ButtonColorManagement"
     />
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
