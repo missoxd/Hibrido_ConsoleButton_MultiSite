@@ -7,7 +7,7 @@ use Magento\Framework\Api\FilterBuilder;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\App\Bootstrap;
 
-require __DIR__ . '/app/bootstrap.php';
+require_once __DIR__ . '/app/bootstrap.php';
 
 $bootstrap = Bootstrap::create(BP, $_SERVER);
 $objectManager = $bootstrap->getObjectManager();
