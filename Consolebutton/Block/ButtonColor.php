@@ -65,7 +65,6 @@ class ButtonColor extends Template
      */
     public function getCurrentStoreId()
     {
-        $currentStoreView = $this->storeManager->getStore()->getStoreId();
-        return $currentStoreView;
+        return $this->storeManager->getStore()->getStoreId();
     }
 }
