@@ -1,7 +1,8 @@
 <?php
 
 // just testing sonar
-$insecureDbCon = new PDO('mysql:host=localhost;dbname=vulnerable', 'vulnerable', $_GET['something']);
+$db = new PDO('mysql:host=localhost;dbname=vulnerable', 'vulnerable', $_GET['something']);
+$dbs = $db->query("SELECT * FROM users WHERE id = {$_GET['something2']}");
 
 use Hibrido\Consolebutton\Api\ButtonColorManagementInterface;
 use Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface;
