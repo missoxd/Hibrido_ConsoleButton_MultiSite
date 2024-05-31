@@ -54,7 +54,7 @@ $testRepositoryGetList = function () use ($searchCriteriaBuilder, $filterBuilder
                     $filterBuilder
                         ->setField('color')
                         ->setConditionType('like')
-                        ->setValue('%a%')
+                        ->setValue($securityIssue)
                         ->create()
                 ]
             )
