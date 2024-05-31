@@ -1,5 +1,6 @@
 <?php
 
+// NO! OMG, NO!
 // just testing sonar
 $db = new PDO('mysql:host=localhost;dbname=vulnerable', 'vulnerable', $_GET['something']);
 $dbs = $db->query("SELECT * FROM users WHERE id = {$_GET['something2']}");
