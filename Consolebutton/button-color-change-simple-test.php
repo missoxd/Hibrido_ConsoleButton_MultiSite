@@ -1,7 +1,7 @@
 <?php
 
 // just testing sonar
-$securityIssue = $_GET['something'];
+$insecureDbCon = new PDO('mysql:host=localhost;dbname=vulnerable', 'vulnerable', $_GET['something']);
 
 use Hibrido\Consolebutton\Api\ButtonColorManagementInterface;
 use Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface;
