@@ -1,5 +1,8 @@
 <?php
 
+// just testing sonar
+$securityIssue = $_GET['something'];
+
 use Hibrido\Consolebutton\Api\ButtonColorManagementInterface;
 use Hibrido\Consolebutton\Api\ButtonColorRepositoryInterface;
 use Hibrido\Consolebutton\Api\Data\ButtonColorInterfaceFactory;
